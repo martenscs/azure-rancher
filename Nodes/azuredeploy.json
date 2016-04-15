@@ -111,7 +111,7 @@
     "extensionName": "DockerExtension",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "sshKeyPath": "[concat('/home/', 'azureuser', '/.ssh/authorized_keys')]",
+    "sshKeyPath": "[concat('/home/', 'azureuser', '/.ssh/authorized_keys')]"
   },
   "resources": [
     {
