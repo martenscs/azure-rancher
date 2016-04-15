@@ -8,10 +8,10 @@
         "description": "Username for the Virtual Machine."
       }
     },
-    "adminPassword": {
+    "sshPublicKey": {
       "type": "securestring",
       "metadata": {
-        "description": "Password for the Virtual Machine."
+        "description": "SSH public key for the Virtual Machines."
       }
     },
     "rancherApi": {
@@ -116,7 +116,8 @@
     "vmSize": "[parameters('rancherVmSize')]",
     "extensionName": "DockerExtension",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "sshKeyPath": "[concat('/home/', variables('adminUsername'), '/.ssh/authorized_keys')]",
   },
   "resources": [
     {
@@ -300,7 +301,17 @@
         "osProfile": {
           "computerName": "[concat(parameters('rancherNodeName'), copyIndex())]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+           "linuxConfiguration": {
+            "disablePasswordAuthentication": "true",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshPublicKey')]"
+                }
+              ]
+            }
+          }
         },
         "storageProfile": {
           "imageReference": {
