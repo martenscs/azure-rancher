@@ -2,12 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Username for the Virtual Machine."
-      }
-    },
     "sshPublicKey": {
       "type": "securestring",
       "metadata": {
@@ -117,7 +111,7 @@
     "extensionName": "DockerExtension",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "sshKeyPath": "[concat('/home/', variables('adminUsername'), '/.ssh/authorized_keys')]",
+    "sshKeyPath": "[concat('/home/', 'azureuser', '/.ssh/authorized_keys')]",
   },
   "resources": [
     {
@@ -300,7 +294,7 @@
         },
         "osProfile": {
           "computerName": "[concat(parameters('rancherNodeName'), copyIndex())]",
-          "adminUsername": "[parameters('adminUsername')]",
+          "adminUsername": "azureuser",
            "linuxConfiguration": {
             "disablePasswordAuthentication": "true",
             "ssh": {
