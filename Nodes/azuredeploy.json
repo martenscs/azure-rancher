@@ -20,6 +20,14 @@
         "description": "The prefix you want to use as hostname"
       }
     },
+    "newSubnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24",
+      "metadata": {
+        "description": "Address space for firewall restrictions."
+      }
+    }
+  },,
 	"rancherVmSize": {
 	  "type": "string",
 	  "metadata": {
@@ -141,16 +149,15 @@
 		  {
             "name": "SSH",
             "properties": {
-              "description": "SSH",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "22",
-              "sourceAddressPrefix": "*",
+              "sourceAddressPrefix": "[parameters('newSubnetAddressPrefix')]",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
-            }
+             }
           },
 		  
           {
@@ -196,7 +203,59 @@
               "priority": 200,
               "direction": "Inbound"
             }
-          }
+          }  ,
+                    {
+                        "name": "ESB-Admin",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "9443",
+                            "sourceAddressPrefix": "[parameters('newSubnetAddressPrefix')]",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 410,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "ESB-Service",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8280",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 420,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "data-services",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8080",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 430,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "mri-services",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8092",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 440,
+                            "direction": "Inbound"
+                        }
+                    }           
 
         ]
       }
