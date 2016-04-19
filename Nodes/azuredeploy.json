@@ -27,7 +27,7 @@
         "description": "Address space for firewall restrictions."
       }
     }
-  },,
+  },
 	"rancherVmSize": {
 	  "type": "string",
 	  "metadata": {
